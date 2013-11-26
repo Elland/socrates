@@ -1,3 +1,19 @@
+<!-- 
+	Values: 
+		posts: Array of Post objects
+			post: 
+				- filename (e.g. 2010-cool-post.md)
+		        - path (e.g. /home/user/2010-cool-post.md)
+		        - contents (post content)
+		        - config (post front config)
+		        - year, month, date (in the format specified in config.yaml)
+		        - title
+		        - url (e.g. /2010/02/cool-post/)
+		        - categories (list)
+		        - author (from config.yaml or from front config)
+		extra: Boolean indicating whether we have more pages
+-->
+
 {% extends "base.html" %}
 
 {% block main %}
