@@ -80,7 +80,7 @@ def main():
             Handler = FixRedirectHandler
             httpd = SocketServer.TCPServer(("", PORT), Handler, False)
 
-            print "serving at port", PORT
+            print "serving at 0.0.0.0: on port", PORT
             try:
                 httpd.allow_reuse_address = True
                 httpd.server_bind()
