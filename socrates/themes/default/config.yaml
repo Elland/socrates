@@ -7,3 +7,4 @@ text_processor: markdown
 templates: django
 append_slash: false
 url_include_day: false
+max_posts_for_feed: 10

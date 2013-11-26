@@ -420,13 +420,13 @@ class Generator(object):
         Create an atom feed
         """
         m = os.path.join(self.DEPLOY, 'atom.xml')
-        if self.SETTINGS['posts_per_page'] == 0:
-            # List all posts on the index page
+        if self.SETTINGS['max_posts_for_feed'] == 0:
+            # List all posts on feed
             posts = self.posts
-        elif len(self.posts) > self.SETTINGS['posts_per_page']:
+        elif len(self.posts) > self.SETTINGS['max_posts_for_feed']:
             # Cut off unnecessary posts
             n = len(self.posts)
-            n = self.SETTINGS['posts_per_page']
+            n = self.SETTINGS['max_posts_for_feed']
             posts = self.posts[:n]
         else:
             posts = self.posts
