@@ -183,12 +183,12 @@ class Post(File):
             self.slug = slugify(self.config['title'])
 
         if context['append_slash']:
-            url_template = '%s/%s/%s/'
+            url_template = '/%s/%s/%s/'
         else:
-            url_template = '%s/%s/%s'
+            url_template = '/%s/%s/%s'
 
         if context['url_include_day']:
-            url_template = '%s/' + url_template
+            url_template = '/%s' + url_template
             self.url = url_template % (self.year, self.month, self.day,
                     self.slug,)
         else:
