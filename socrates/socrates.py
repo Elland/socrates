@@ -315,7 +315,6 @@ class Generator(object):
                 t = post.config['template']
             else:
                 t = self.SINGLE
-
             content = self.render(t, self._v({'post': post}))
 
             # Print filename to show progress
@@ -399,6 +398,8 @@ class Generator(object):
         else:
             posts = self.posts
             extra = False
+        if not isinstance(posts, list):
+            posts = [posts];
         contents = self.render(self.INDEX, self._v({'posts': posts, 'extra':
             extra}))
         self._write_to_file(m, contents)
@@ -488,40 +489,46 @@ class Generator(object):
             /page/3/
         Uses posts per page setting
         """
-        per = int(self.SETTINGS['posts_per_page'])
-        if per == 0:
+        posts_per_page = int(self.SETTINGS['posts_per_page'])
+        if posts_per_page == 0:
             # Skip pagination if all posts are on index page
             return
+
         self.log('Creating pagination...')
-        num = len(self.posts)
-        pages = num / per
+        
+        posts_count = len(self.posts)
+        pages_count = posts_count / posts_per_page
 
         m = os.path.join(self.DEPLOY, 'page')
+
         if not os.path.exists(m):
             os.mkdir(m)
-        for x in range(1, pages + 1):
-            if x == 1:
-                prev = '/'
+            
+        for page_number in range(1, pages_count):
+            if page_number == 1:
+                previous_page_number = '/'
             else:
-                prev = '/page/%d/' % x
+                previous_page_number = '/page/%d/' % int(page_number)
 
-            if x < pages:
-                next = '/page/%d/' % int(x + 1)
+            if page_number + 1 < pages_count:
+                next_page_number = '/page/%d/' % int(page_number + 2)
             else:
-                next = None
+                next_page_number = None
 
-            n = per * x
-            p = self.posts[n:n + per]
-
+            posts = [self.posts[page_number]]
+            
+                
             v = {
-                'page': x + 1,
-                'posts': p,
-                'prev': prev,
-                'total': pages + 1,
-                'next': next
+                'page': page_number + 1,
+                'posts': posts,
+                'prev': previous_page_number,
+                'total': pages_count
             }
+            
+            if next_page_number:
+                v['next'] = next_page_number
 
-            folder = self._get_page_str(x, pages + 1)
+            folder = self._get_page_str(page_number, pages_count + 1)
 
             e = os.path.join(m, folder)
             if not os.path.exists(e):
