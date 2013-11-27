@@ -430,6 +430,7 @@ class Generator(object):
             posts = self.posts[:n]
         else:
             posts = self.posts
+
         contents = self.render(self.ATOM, self._v({'posts': posts, 'now':
             self._get_atom_date()}))
 
