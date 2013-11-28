@@ -9,8 +9,8 @@ import sys
 import shutil
 import yaml
 import json
+import calendar
 from datetime import datetime
-
 from .renderers import DjangoRenderer, Jinja2Renderer
 from .models import Post, Page
 from .utils import slugify
@@ -259,25 +259,29 @@ class Generator(object):
             # Post dirs
             #   years
             date = post.config['date']
-            year = str(date.year)
-            if year not in self.years:
-                self.years[year] = {}
+            post_year = str(date.year)
+            if post_year not in self.years:
+                self.years[post_year] = {}
             #   months
-            m = date.strftime("%m")
-            y = self.years[year]
-            if m not in list(y.keys()):
-                self.years[year][m] = []
+            month = date.strftime("%m")
+            year = self.years[post_year]
+
+            if month not in list(year.keys()):
+                self.years[post_year][month] = {}
 
             if self.SETTINGS['url_include_day']:
-                if post.day not in self.years[year][m]:
-                    self.years[year][m].append(post.day)
+                if post.day not in self.years[post_year][month]:
+                    self.years[post_year][month].append(post.day)
 
             # Archives
-            d = year
-            if d not in self.archives:
-                self.archives[d] = [post]
+            if post_year not in self.archives:
+                self.archives[post_year] = {}
+                
+            month_name = calendar.month_name[int(month)]
+            if month_name not in self.archives[post_year]:
+                self.archives[post_year][month_name] = [post]
             else:
-                self.archives[d].append(post)
+                self.archives[post_year][month_name].append(post)
 
         self.make_post_directories()
         self.save_posts()
@@ -467,21 +471,17 @@ class Generator(object):
         Make archive pages. Only by year.
         """
         self.log('Creating archives...')
-        keys = list(self.archives.keys())
-        if len(keys) != 0:
+
+        if len(self.archives.keys()) != 0:
             # Make category dir
             self.ARCHIVES = os.path.join(self.DEPLOY, 'archive')
             if not os.path.exists(self.ARCHIVES):
                 os.mkdir(self.ARCHIVES)
-            for k in keys:
-                p = os.path.join(self.ARCHIVES, slugify(k))
-                if not os.path.exists(p):
-                    os.mkdir(p)
-                posts = self.archives[k]
-                contents = self.render(self.ARCHIVE,
-                        self._v({'year': k, 'posts': posts}))
-                m = os.path.join(p, 'index.html')
-                self._write_to_file(m, contents)
+            
+            contents = self.render(self.ARCHIVE,
+                    self._v({'archived_posts': self.archives}))
+            m = os.path.join(self.ARCHIVES, 'index.html')
+            self._write_to_file(m, contents)
 
     def make_pagination(self):
         """

@@ -17,7 +17,7 @@ class DjangoRenderer(BaseRenderer):
         settings.configure(DEBUG=True, TEMPLATE_DEBUG=True,
                 TEMPLATE_DIRS=[path])
         self._render = render_to_string
-
+    
     def render(self, template, values):
         return self._render(template, values)
 

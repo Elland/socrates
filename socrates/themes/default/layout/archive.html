@@ -1,11 +1,13 @@
+<!-- 
+	Values:
+		'years': Array of years (ex.: 2012, 2011, 2013);
+		'archived_posts': Dictionary of posts with years as keys (ex.: {'2013' : [post1, post2]}).
+ -->
+
 {% extends "base.html" %}
 
 {% block main %}
-<a href="/">&laquo; home</a>
-    <h2>Archives for  {{ year }}</h2>
-{% for post in posts %}
-    <div class="post">
-        <h3><a href="/{{ post.url }}">{{ post.config.title }}</a></h3>
-    </div>
-{% endfor %}
+	{% for year in years %}
+		<h2> {{year}} </h2>
+	{% endfor %}
 {% endblock %}
