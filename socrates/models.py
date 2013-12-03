@@ -185,7 +185,7 @@ class Post(File):
         if context['append_slash']:
             url_template = '/%s/%s/%s/'
         else:
-            url_template = '/%s/%s/%s.html'
+            url_template = '/%s/%s/%s'
 
         if context['url_include_day']:
             url_template = '/%s' + url_template
