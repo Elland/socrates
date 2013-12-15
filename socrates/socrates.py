@@ -220,14 +220,13 @@ class Generator(object):
         Get all files from the posts directory, create Post instances and add
         them to the self.posts list.
         """
-        for filename in os.listdir(self.POSTS):
+        for filename in sorted(os.listdir(self.POSTS)):
             if not filename.startswith('.') and not filename.startswith('_'):
                 p = os.path.join(self.POSTS, filename)
                 try:
                     self.posts.append(Post(p, self.SETTINGS))
                 except ConfigurationError:
-                    sys.stderr.write("WARNING: %s isn't configured properly.\n"
-                            % filename)
+                    sys.stderr.write("WARNING: %s isn't configured properly.\n" % filename)
                     sys.exit(1)
         self.posts.reverse()
 
