@@ -503,7 +503,8 @@ class Generator(object):
 
         if not os.path.exists(m):
             os.mkdir(m)
-            
+        
+        posts_sorted = sorted(self.posts)    
         for page_number in range(1, pages_count):
             if page_number == 1:
                 previous_page_number = '/'
@@ -515,7 +516,7 @@ class Generator(object):
             else:
                 next_page_number = None
 
-            posts = [self.posts[page_number]]
+            posts = [posts_sorted[page_number]]
             
                 
             v = {
