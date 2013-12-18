@@ -434,10 +434,11 @@ class Generator(object):
         else:
             posts = self.posts
 
-        contents = self.render(self.ATOM, self._v({'posts': posts, 'now':
-            self._get_atom_date()}))
-
-        contents = contents.replace('&nbsp;', '')
+        contents = self.render(self.ATOM, self._v({'posts': posts, 'now': self._get_atom_date()}))
+        
+        if self.settings['truncate_feed']:
+            contents = contents.replace('&nbsp;', '')
+            
         self._write_to_file(m, contents)
 
     def _get_atom_date(self):
