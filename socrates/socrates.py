@@ -517,6 +517,8 @@ class Generator(object):
             posts = [self.posts[page_number]]
             
                 
+            print("Creating page for post %s" % posts[0].title + " dated: %s" % str(posts[0].date))
+            
             v = {
                 'page': page_number + 1,
                 'posts': posts,
