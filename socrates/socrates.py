@@ -10,12 +10,15 @@ import shutil
 import yaml
 import json
 import calendar
+import math
 from datetime import datetime
 from .renderers import DjangoRenderer, Jinja2Renderer
 from .models import Post, Page
 from .utils import slugify
 from .exceptions import ConfigurationError
 
+
+import pdb
 
 DEFAULTS = {
     'author': 'author',
@@ -496,7 +499,7 @@ class Generator(object):
         self.log('Creating pagination...')
         
         posts_count = len(self.posts)
-        pages_count = posts_count / posts_per_page
+        pages_count = int(math.ceil(float(posts_count) / posts_per_page))
 
         m = os.path.join(self.DEPLOY, 'page')
 
@@ -514,11 +517,13 @@ class Generator(object):
             else:
                 next_page_number = None
 
-            posts = [self.posts[page_number]]
-            
-                
-            print("Creating page for post %s" % posts[0].title + " dated: %s" % str(posts[0].date))
-            
+            first_post_index = page_number * posts_per_page
+            last_post_index = first_post_index + posts_per_page
+
+            posts = self.posts[first_post_index:last_post_index]
+        
+            self.log("Creating page for post %s" % posts[0].title + " dated: %s" % str(posts[0].date))
+                        
             v = {
                 'page': page_number + 1,
                 'posts': posts,
