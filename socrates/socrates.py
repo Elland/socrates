@@ -321,7 +321,14 @@ class Generator(object):
                 t = post.config['template']
             else:
                 t = self.SINGLE
-            content = self.render(t, self._v({'post': post}))
+
+            index = self.posts.index(post)
+
+            previous_post = self.posts[index - 1] if index > 0 else False
+            next_post = self.posts[index + 1] if index+1 < len(self.posts) else False
+            
+            # pdb.set_trace()
+            content = self.render(t, self._v({'post': post, 'previous_post': previous_post, 'next_post': next_post}))
 
             # Print filename to show progress
             self.log(post.filename)
