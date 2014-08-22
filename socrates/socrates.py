@@ -521,8 +521,6 @@ class Generator(object):
             last_post_index = first_post_index + posts_per_page
 
             posts = self.posts[first_post_index:last_post_index]
-        
-            self.log("Creating page for post %s" % posts[0].title + " dated: %s" % str(posts[0].date))
                         
             v = {
                 'page': page_number + 1,
