@@ -521,6 +521,12 @@ class Generator(object):
             last_post_index = first_post_index + posts_per_page
 
             posts = self.posts[first_post_index:last_post_index]
+            
+            names = []
+            for post in posts:
+                names.append(post.title)
+
+            self.log("Creating page for posts: %s" % ", ".join(names))
                         
             v = {
                 'page': page_number + 1,
