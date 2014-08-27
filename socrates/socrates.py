@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Socrates - Static site generator
 (c) 2011-2012 - Honza Pokorny et al.
@@ -531,7 +532,7 @@ class Generator(object):
             
             names = []
             for post in posts:
-                names.append(post.title)
+                names.append(post.title.encode('utf-8'))
 
             self.log("Creating page for posts: %s" % ", ".join(names))
                         
