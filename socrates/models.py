@@ -211,7 +211,7 @@ class Post(File):
         self.reading_time = self._get_reading_time()
 
     def _get_atom_date(self, date):
-        d = date.strftime('%Y-%m-%dT%H:%M:%S%z')
+        d = date.strftime("%a, %d %b %Y %H:%M:%S %z")
         return d + "Z"
 
     def _get_reading_time(self):
