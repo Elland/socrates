@@ -10,12 +10,17 @@ class BaseRenderer(object):
 class DjangoRenderer(BaseRenderer):
 
     def __init__(self, path):
+
+        import django
         from django.conf import settings
         from django.template.loader import render_to_string
 
         path = os.path.abspath(path)
         settings.configure(DEBUG=True, TEMPLATE_DEBUG=True,
                 TEMPLATE_DIRS=[path])
+        
+        django.setup()
+
         self._render = render_to_string
     
     def render(self, template, values):
